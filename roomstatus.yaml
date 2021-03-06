@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: room-status-deployment
+  labels:
+    app: room-status
+spec:
+  selector:
+    matchLabels:
+      app: room-status
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: room-status
+    spec:
+      containers:
+      - name: room-status
+        image: ***REMOVED***:9002/roomstatus:latest
+        ports:
+        - containerPort: 8083
+      imagePullSecrets:
+        - name: nexus
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: room-status
+spec:
+  selector:
+    app: room-status
+  ports:
+    - protocol: TCP
+      port: 8083
+      targetPort: 8083
+      nodePort: 30083   
+  type: NodePort
+
