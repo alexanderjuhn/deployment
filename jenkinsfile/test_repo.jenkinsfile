@@ -1,0 +1,69 @@
+pipeline {
+    agent {
+        label "master"
+    }
+    
+    tools { 
+        jdk 'java11' 
+    }
+    
+    environment {         
+        LC_ALL = 'en_US.UTF-8'         
+        LANG    = 'en_US.UTF-8'         
+        LANGUAGE = 'en_US.UTF-8' 
+        // This can be nexus3 or nexus2
+        NEXUS_VERSION = "nexus3"
+        // This can be http or https
+        NEXUS_PROTOCOL = "http"
+        // Where your Nexus is running
+        NEXUS_URL = "localhost:8081"
+        // Repository where we will upload the artifact
+        NEXUS_REPOSITORY = "home"
+        // Jenkins credential id to authenticate to Nexus OSS
+        NEXUS_CREDENTIAL_ID = "nexus"
+    }
+
+    stages {
+        stage('Clean working directory'){
+            steps{
+                sh "rm -f -R ${env.WORKSPACE}/*"
+            }
+        }
+        
+        stage('Checkout SCM') {
+            steps {
+                git branch: 'master',
+                credentialsId: 'SSH_Key',
+                url: 'git@github.com:alexanderjuhn/deployment.git'
+            }
+        }
+        
+        stage('Build application'){
+            steps{
+                sh 'mvn install package -ntp -f RoomApps'
+            }
+        }
+        
+        stage('Publish') {
+            steps{
+                nexusPublisher nexusInstanceId: 'nexus', 
+                nexusRepositoryId: 'home', 
+                packages: 
+                [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: 'RoomApps/RoomObserver/target/RoomObserver-spring-boot.jar']], 
+                mavenCoordinate: [artifactId: 'RoomObserver', groupId: 'net.juhn.roomapps', packaging: 'jar', version: '${BUILD_NUMBER}']]]
+                
+                nexusPublisher nexusInstanceId: 'nexus', 
+                nexusRepositoryId: 'home', 
+                packages: 
+                [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: 'RoomApps/RoomStatus/target/RoomStatus-spring-boot.jar']], 
+                mavenCoordinate: [artifactId: 'RoomStatus', groupId: 'net.juhn.roomapps', packaging: 'jar', version: '${BUILD_NUMBER}']]]
+                
+                nexusPublisher nexusInstanceId: 'nexus', 
+                nexusRepositoryId: 'home', 
+                packages: 
+                [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: 'RoomApps/RoomWorker/target/RoomWorker-spring-boot.jar']], 
+                mavenCoordinate: [artifactId: 'RoomWorker', groupId: 'net.juhn.roomapps', packaging: 'jar', version: '${BUILD_NUMBER}']]]
+            }
+        }
+    }
+}

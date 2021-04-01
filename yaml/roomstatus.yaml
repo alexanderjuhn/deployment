@@ -4,6 +4,7 @@ metadata:
   name: room-status-deployment
   labels:
     app: room-status
+  namespace: YOUR_NAMESPACE_HERE
 spec:
   selector:
     matchLabels:
@@ -26,6 +27,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: room-status
+  namespace: YOUR_NAMESPACE_HERE
 spec:
   selector:
     app: room-status

@@ -1,0 +1,12 @@
+ 
+stage('usernamePassword') {
+            steps {
+                script {
+                    withCredentials([
+                        usernamePassword(credentialsId: 'nexus',
+                            usernameVariable: 'username',
+                            passwordVariable: 'password')
+                    ]) 
+                }
+            }
+        }
