@@ -142,7 +142,8 @@
 					}
 				},
 				"url": {
-					"raw": "{{hostname}}:{{portObserver}}/reportRoom",
+					"raw": "http://{{hostname}}:{{portObserver}}/reportRoom",
+					"protocol": "http",
 					"host": [
 						"{{hostname}}"
 					],
@@ -181,12 +182,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://***REMOVED***:30083/getRoomStatusesLatest",
+					"raw": "http://{{hostname}}:{{portStatus}}/getRoomStatusesLatest",
 					"protocol": "http",
 					"host": [
-						"***REMOVED***"
+						"{{hostname}}"
 					],
-					"port": "30083",
+					"port": "{{portStatus}}",
 					"path": [
 						"getRoomStatusesLatest"
 					]
