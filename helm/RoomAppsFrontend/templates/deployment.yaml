@@ -4,7 +4,7 @@ metadata:
   name: temperature-frontend-deployment
   labels:
     app: temperature-frontend
-  namespace: dev
+  namespace: {{ .Values.environment }}
 spec:
   selector:
     matchLabels:
@@ -17,24 +17,8 @@ spec:
     spec:
       containers:
       - name: temperature-frontend
-        image: ***REMOVED***:9002/temperaturefrontend:latest
+        image: {{ .Values.temperaturefrontend.image }} 
         ports:
         - containerPort: 8081
       imagePullSecrets:
         - name: nexus
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: temperature-frontend
-  namespace: dev
-spec:
-  selector:
-    app: temperature-frontend
-  ports:
-    - protocol: TCP
-      port: 8080
-      targetPort: 8080
-      nodePort: 30080 
-  type: NodePort
-

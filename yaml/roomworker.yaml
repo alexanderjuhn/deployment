@@ -4,7 +4,7 @@ metadata:
   name: room-worker-deployment
   labels:
     app: room-worker
-  namespace: YOUR_NAMESPACE_HERE
+  namespace: dev
 spec:
   selector:
     matchLabels:
@@ -27,7 +27,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: room-worker
-  namespace: YOUR_NAMESPACE_HERE
+  namespace: dev
 spec:
   selector:
     app: room-worker

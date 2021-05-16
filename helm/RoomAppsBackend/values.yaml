@@ -1,0 +1,12 @@
+# Test 
+
+environment: prod
+roomobserver: 
+  port: 30081
+  image: ***REMOVED***:9002/roomobserver:latest
+roomstatus: 
+  port: 30083
+  image: ***REMOVED***:9002/roomstatus:latest
+roomworker: 
+  port: 30082
+  image: ***REMOVED***:9002/roomworker:latest

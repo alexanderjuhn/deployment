@@ -1,0 +1,7 @@
+# Test 
+
+environment: prod
+
+temperaturefrontend: 
+  port: 30080
+  image: ***REMOVED***:9002/temperaturefrontend:latest
