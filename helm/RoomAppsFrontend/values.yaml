@@ -4,4 +4,4 @@ environment: prod
 
 temperaturefrontend: 
   port: 30080
-  image: ***REMOVED***:9002/temperaturefrontend:latest
+  image: localhost:9002/temperaturefrontend:latest

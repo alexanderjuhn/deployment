@@ -11,8 +11,11 @@ pipeline {
         }
         stage('Download artifacts'){
             steps{ 
-                sh "curl -u sascha:'***REMOVED***' -X GET 'http://***REMOVED***:8081/service/rest/v1/search/assets?group=net.juhn.roomapps&name=RoomStatusFrontend&version=${params.Build}&maven.extension=zip' | grep -Po '\"downloadUrl\" : \"\\K.+(?=\",)' |  xargs curl -fsSL -o RoomStatusFrontend.zip"
-                sh "pwd"
+                withCredentials([usernamePassword(credentialsId: 'nexus', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh "curl -u $USERNAME:'$PASSWORD' -X GET 'http://***REMOVED***:8081/service/rest/v1/search/assets?group=net.juhn.roomapps&name=RoomStatusFrontend&version=${params.Build}&maven.extension=zip' | grep -Po '\"downloadUrl\" : \"\\K.+(?=\",)' |  xargs curl -fsSL -o RoomStatusFrontend.zip"
+                    sh "pwd"
+                }
+                
             }
         }
         stage('Stop server'){
