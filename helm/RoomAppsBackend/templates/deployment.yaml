@@ -15,6 +15,10 @@ spec:
       labels:
         app: room-observer
     spec:
+      hostAliases:
+      - ip: {{ .Values.hostAliasDB.ip }}
+        hostnames:
+        - {{ .Values.hostAliasDB.hostname }}
       containers:
       - name: room-observer
         image: {{ .Values.roomobserver.image }}
@@ -40,6 +44,10 @@ spec:
       labels:
         app: room-status
     spec:
+      hostAliases:
+      - ip: {{ .Values.hostAliasDB.ip }}
+        hostnames:
+        - {{ .Values.hostAliasDB.hostname }}
       containers:
       - name: room-status
         image: {{ .Values.roomstatus.image }}
@@ -65,6 +73,10 @@ spec:
       labels:
         app: room-worker
     spec:
+      hostAliases:
+      - ip: {{ .Values.hostAliasDB.ip }}
+        hostnames:
+        - {{ .Values.hostAliasDB.hostname }}
       containers:
       - name: room-worker
         image: {{ .Values.roomworker.image }}
