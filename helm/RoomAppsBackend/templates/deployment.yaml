@@ -19,11 +19,18 @@ spec:
       - ip: {{ .Values.hostAliasDB.ip }}
         hostnames:
         - {{ .Values.hostAliasDB.hostname }}
+      volumes:
+        - name: config-volume-roomobserver
+          configMap:
+            name: {{ .Values.roomobserver.config }}
       containers:
       - name: room-observer
         image: {{ .Values.roomobserver.image }}
         ports:
         - containerPort: 8081
+        volumeMounts:
+            - name: config-volume-roomobserver
+              mountPath: /workspace/config
       imagePullSecrets:
         - name: nexus
 ---
@@ -48,11 +55,18 @@ spec:
       - ip: {{ .Values.hostAliasDB.ip }}
         hostnames:
         - {{ .Values.hostAliasDB.hostname }}
+      volumes:
+        - name: config-volume-roomstatus
+          configMap:
+            name: {{ .Values.roomstatus.config }}
       containers:
       - name: room-status
         image: {{ .Values.roomstatus.image }}
         ports:
         - containerPort: 8081
+        volumeMounts:
+            - name: config-volume-roomstatus
+              mountPath: /workspace/config
       imagePullSecrets:
         - name: nexus
 ---
@@ -77,10 +91,17 @@ spec:
       - ip: {{ .Values.hostAliasDB.ip }}
         hostnames:
         - {{ .Values.hostAliasDB.hostname }}
+      volumes:
+        - name: config-volume-roomworker
+          configMap:
+            name: {{ .Values.roomworker.config }}
       containers:
       - name: room-worker
         image: {{ .Values.roomworker.image }}
         ports:
         - containerPort: 8081
+        volumeMounts:
+            - name: config-volume-roomworker
+              mountPath: /workspace/config
       imagePullSecrets:
         - name: nexus
