@@ -1,0 +1,71 @@
+ 
+pipeline {
+    agent {
+        label "1__***REMOVED***"
+    }
+    
+    tools { 
+        jdk 'java11' 
+    }
+    
+    environment {                
+        LANG    = 'en_US.UTF-8'         
+        LANGUAGE = 'en_US.UTF-8' 
+        // This can be nexus3 or nexus2
+        NEXUS_VERSION = "nexus3"
+        // This can be http or https
+        NEXUS_PROTOCOL = "http"
+        // Where your Nexus is running
+        NEXUS_URL = "${env.NEXUS_REPO}"
+        // Repository where we will upload the artifact
+        NEXUS_REPOSITORY = "home"
+        // Nexus Login
+        NEXUS_LOGIN = credentials('nexus')
+    }
+
+    stages {
+            
+        stage('Clean working directory'){
+            
+            steps{
+                sh "rm -f -R ${env.WORKSPACE}/*"
+            }
+        }
+        stage('Download artifacts'){
+            steps{ 
+                sh "curl -u ${env.NEXUS_LOGIN_USR}:${env.NEXUS_LOGIN_PSW} -X GET 'http://${env.NEXUS_REPO}/service/rest/v1/search/assets?group=net.juhn.roomapps&name=RoomObserver&version=${params.Build}&maven.extension=jar&maven.classifier' | grep -Po '\"downloadUrl\" : \"\\K.+(?=\",)' |  xargs curl -fsSL -o RoomObserver.jar"
+                sh "curl -u ${env.NEXUS_LOGIN_USR}:${env.NEXUS_LOGIN_PSW} -X GET 'http://${env.NEXUS_REPO}/service/rest/v1/search/assets?group=net.juhn.roomapps&name=RoomStatus&version=${params.Build}&maven.extension=jar&maven.classifier' | grep -Po '\"downloadUrl\" : \"\\K.+(?=\",)' |  xargs curl -fsSL -o RoomStatus.jar"
+                sh "curl -u ${env.NEXUS_LOGIN_USR}:${env.NEXUS_LOGIN_PSW} -X GET 'http://${env.NEXUS_REPO}/service/rest/v1/search/assets?group=net.juhn.roomapps&name=RoomWorker&version=${params.Build}&maven.extension=jar&maven.classifier' | grep -Po '\"downloadUrl\" : \"\\K.+(?=\",)' |  xargs curl -fsSL -o RoomWorker.jar"
+            }
+        }
+        stage('Stop old apps'){
+            steps{
+                checkFile('/opt/RoomApps/RoomObserver/pid') 
+                checkFile('/opt/RoomApps/RoomStatus/pid')
+                checkFile('/opt/RoomApps/RoomWorker/pid')
+                sh "ps -aux | grep java"
+            }
+        }
+        stage('Run apps'){
+            steps{
+                
+                sh "sudo mv ./RoomWorker.jar /opt/RoomApps/RoomWorker/"
+                sh "sudo mv ./RoomStatus.jar /opt/RoomApps/RoomStatus/"
+                sh "sudo mv ./RoomObserver.jar /opt/RoomApps/RoomObserver/"
+                sh "export JENKINS_NODE_COOKIE=dontKillMe && /opt/RoomApps/RoomObserver/start_server.sh"
+                sh "export JENKINS_NODE_COOKIE=dontKillMe && /opt/RoomApps/RoomWorker/start_server.sh"
+                sh "export JENKINS_NODE_COOKIE=dontKillMe && /opt/RoomApps/RoomStatus/start_server.sh"
+            }
+        }
+    }
+}
+
+boolean checkFile(String path){
+    def exists = fileExists path
+    if (exists){
+        sh "cat "+path
+        sh "sudo kill \$(cat "+path+")"
+    }
+    return exists
+}
+
