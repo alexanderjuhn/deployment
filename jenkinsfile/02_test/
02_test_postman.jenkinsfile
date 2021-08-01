@@ -1,0 +1,52 @@
+// Required plugins:
+// Credentials Binding
+pipeline {
+    agent {
+        label "x86"
+    }
+
+    environment {
+        GIT_USERNAME = 'git'
+        GIT_REPO_DEPLOYMENT = "${env.GIT_REPO}:/datengrab/hd/git/deployment.git"
+    }
+    
+    stages {
+        stage('Clone repository'){
+            steps{
+                dir('deployment'){
+                    git branch: 'master',
+                    credentialsId: 'SSH_Key',
+                    url: "${env.GIT_USERNAME}@${env.GIT_REPO_DEPLOYMENT}"
+                    
+                }
+                
+            }
+        }
+        
+        stage('Checkout config'){
+            steps{
+                dir('config'){
+                    git branch: 'master',
+                    credentialsId: 'SSH_Key',
+                    url: "git@${env.GIT_REPO}:/datengrab/hd/git/config.git"                    
+                }
+            }
+        }
+        
+        stage('Build volume'){
+            steps{
+                sh """
+                    cp ./deployment/postman/* ./config/postman/
+                """
+            }
+        }
+        
+        stage('Run Postman tests'){
+            steps{
+                sh """
+                    docker run -v "${env.WORKSPACE}/config/postman":/etc/newman --rm -t postman/newman run "/etc/newman/RoomApps.postman_collection.json" --color off  --environment="Dev.postman_environment.json"                    
+                """                
+            }
+        }
+    }
+}
