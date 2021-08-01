@@ -20,16 +20,31 @@ spec:
         hostnames:
         - {{ .Values.hostAliasDB.hostname }}
       volumes:
-        - name: config-volume-roomobserver
+        - name: config-volume
           configMap:
             name: {{ .Values.roomobserver.config }}
       containers:
       - name: room-observer
         image: {{ .Values.roomobserver.image }}
+        #resources: {}
+        #livenessProbe:
+        #  httpGet:
+        #    path: /actuator/health/liveness
+        #    port: 8081
+        #  initialDelaySeconds: 120
+        #readinessProbe:
+        #  httpGet:
+        #    path: /actuator/health/readiness
+        #    port: 8081
+        #  initialDelaySeconds: 120
+        #lifecycle:
+        #  preStop:
+        #    exec:
+        #      command: ["sh", "-c", "sleep 10"]
         ports:
         - containerPort: 8081
         volumeMounts:
-            - name: config-volume-roomobserver
+            - name: config-volume
               mountPath: /workspace/config
       imagePullSecrets:
         - name: nexus
@@ -56,16 +71,32 @@ spec:
         hostnames:
         - {{ .Values.hostAliasDB.hostname }}
       volumes:
-        - name: config-volume-roomstatus
+        - name: config-volume
           configMap:
             name: {{ .Values.roomstatus.config }}
       containers:
       - name: room-status
         image: {{ .Values.roomstatus.image }}
+        #resources: {}
+        #livenessProbe:
+        #  httpGet:
+        #    path: /actuator/health/liveness
+        #    port: 8081
+        #  initialDelaySeconds: 120
+        #readinessProbe:
+        #  httpGet:
+        #    path: /actuator/health/readiness
+        #    port: 8081
+        #  initialDelaySeconds: 120
+        #lifecycle:
+        #  preStop:
+        #    exec:
+        #      command: ["sh", "-c", "sleep 10"]
+
         ports:
         - containerPort: 8081
         volumeMounts:
-            - name: config-volume-roomstatus
+            - name: config-volume
               mountPath: /workspace/config
       imagePullSecrets:
         - name: nexus
@@ -92,16 +123,32 @@ spec:
         hostnames:
         - {{ .Values.hostAliasDB.hostname }}
       volumes:
-        - name: config-volume-roomworker
+        - name: config-volume
           configMap:
             name: {{ .Values.roomworker.config }}
       containers:
       - name: room-worker
         image: {{ .Values.roomworker.image }}
+        #resources: {}
+        #livenessProbe:
+        #  httpGet:
+        #    path: /actuator/health/liveness
+        #    port: 8081
+        #  initialDelaySeconds: 120
+        #readinessProbe:
+        #  httpGet:
+        #    path: /actuator/health/readiness
+        #    port: 8081
+        #  initialDelaySeconds: 120
+        #lifecycle:
+        #  preStop:
+        #    exec:
+        #      command: ["sh", "-c", "sleep 10"]
+
         ports:
         - containerPort: 8081
         volumeMounts:
-            - name: config-volume-roomworker
+            - name: config-volume
               mountPath: /workspace/config
       imagePullSecrets:
         - name: nexus
