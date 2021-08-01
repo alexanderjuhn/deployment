@@ -1,0 +1,87 @@
+pipeline {
+    agent {
+        label "master"
+    }
+    
+    tools { 
+        jdk 'java11' 
+    }
+    
+    environment {         
+        LC_ALL = 'en_US.UTF-8'         
+        LANG    = 'en_US.UTF-8'         
+        LANGUAGE = 'en_US.UTF-8' 
+        // Nexus parameters
+        NEXUS_VERSION = "nexus3"
+        NEXUS_PROTOCOL = "http"
+        NEXUS_URL = "${env.NEXUS_REPO}"
+        NEXUS_REPOSITORY = "home"
+        NEXUS_CREDENTIAL_ID = "nexus"
+        // Container Image to build
+        CONTAINER_IMAGE_OBSERVER = "${env.DOCKER_REPO}/roomobserver:${env.BUILD_NUMBER}"
+        CONTAINER_IMAGE_STATUS = "${env.DOCKER_REPO}/roomstatus:${env.BUILD_NUMBER}"
+        CONTAINER_IMAGE_WORKER = "${env.DOCKER_REPO}/roomworker:${env.BUILD_NUMBER}"
+        // Docker Login
+        DOCKER_LOGIN = credentials('DOCKER_USER')
+        // Remaining environment variables are set under 
+        // Manage Jenkins > Configure System > Global properties > Environment variables
+    }
+
+    stages {
+        stage('Clean working directory'){
+            steps{
+                sh "rm -f -R ${env.WORKSPACE}/*"
+            }
+        }
+        
+        stage('Checkout SCM') {
+            steps {
+                git branch: 'master',
+                credentialsId: 'SSH_Key',
+                url: "git@${env.GIT_REPO}:/datengrab/hd/git/temperatur_master_java/home.git"
+            }
+        }
+        
+        stage('Build binarys'){
+            steps {
+                sh """
+                    cd RoomApps
+                    mvn -B install"""
+            }
+        }
+        
+        stage('Build containers'){
+            steps {
+                sh """
+                    cd RoomApps
+                    cd RoomWorker
+                    docker build -t ${env.CONTAINER_IMAGE_WORKER} .
+                    docker tag ${env.CONTAINER_IMAGE_WORKER} ${env.CONTAINER_IMAGE_WORKER}
+                """
+                sh """
+                    cd RoomApps
+                    cd RoomStatus
+                    docker build -t ${env.CONTAINER_IMAGE_STATUS} .
+                    docker tag ${env.CONTAINER_IMAGE_STATUS} ${env.CONTAINER_IMAGE_STATUS}
+                """
+                sh """
+                    cd RoomApps
+                    cd RoomObserver
+                    docker build -t ${env.CONTAINER_IMAGE_OBSERVER} .
+                    docker tag ${env.CONTAINER_IMAGE_OBSERVER} ${env.CONTAINER_IMAGE_OBSERVER}
+                """
+            }
+        }
+        
+        stage('Push container'){
+            steps {
+                sh """
+                    docker login ${env.DOCKER_REPO} -u ${env.DOCKER_LOGIN_USR} -p ${env.DOCKER_LOGIN_PSW}
+                    docker push ${env.CONTAINER_IMAGE_WORKER}
+                    docker push ${env.CONTAINER_IMAGE_STATUS}
+                    docker push ${env.CONTAINER_IMAGE_OBSERVER}
+                """
+            }
+        }
+    }
+}

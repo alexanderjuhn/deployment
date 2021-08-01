@@ -1,0 +1,36 @@
+pipeline {
+    agent none
+    stages {
+        stage('Deploy new Client') {
+            matrix {
+                agent {
+                    label "2__local-${ROOM}"
+                }
+                axes {
+                    axis {
+                        name 'ROOM'
+                        // names of all nodes with temperature sensor
+                        values 'schlafzimmer', 'wohnzimmer', 'arbeitszimmer', 'outside'
+                    }
+                }
+                stages {
+                    stage('Stop Rest Client') {
+                        steps {
+                            sh "./temperatur_node/stop_client.sh"
+                        }
+                    }
+                    stage('Copy new Client') {
+                        steps {
+                            sh "cp ./temperatur_node/* /home/pi/rest"
+                        }
+                    }
+                    stage('Start new Rest Client') {
+                        steps {
+                            sh "export JENKINS_NODE_COOKIE=dontKillMe && sh /home/pi/rest/start_client.sh"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
