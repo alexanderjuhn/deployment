@@ -1,0 +1,47 @@
+pipeline {
+    agent {
+        label "x86"
+    }
+
+    environment {
+        GIT_USERNAME = 'git'
+        GIT_REPO_DEPLOYMENT = "${env.GIT_REPO}:/datengrab/hd/git/deployment.git"
+        GIT_REPO_CONFIG = "${env.GIT_REPO}:/datengrab/hd/git/config.git"
+    }
+    
+    stages {
+        stage('Clone deployment repository'){
+            steps{
+                dir('deployment'){
+                    git branch: 'master',
+                    credentialsId: 'SSH_Key',
+                    url: "${env.GIT_USERNAME}@${env.GIT_REPO_DEPLOYMENT}"
+                    
+                }
+                
+            }
+        }
+        
+        stage('Checkout config'){
+            steps{
+                dir('config'){
+                    git branch: 'master',
+                    credentialsId: 'SSH_Key',
+                    url: "${env.GIT_USERNAME}@${env.GIT_REPO_CONFIG}"                    
+                }
+            }
+        }
+
+        stage('Run Helm deployment'){
+            steps{
+                sh """
+                    docker run -t --rm -v \"\$(pwd)/deployment/helm\":/apps -w /apps \
+                        -v \"\$(pwd)/config/helm/RoomApps\":/config \
+                        -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm -v ~/.config/helm:/root/.config/helm \
+                        -v ~/.cache/helm:/root/.cache/helm \
+                        alpine/helm upgrade -i prod-backend RoomAppsBackend -f /config/prod/backend_values.yaml
+                """
+            }
+        }
+    }
+}
