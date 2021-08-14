@@ -39,7 +39,8 @@ pipeline {
                         -v \"\$(pwd)/config/helm/RoomApps\":/config \
                         -v ~/.kube:/root/.kube -v ~/.helm:/root/.helm -v ~/.config/helm:/root/.config/helm \
                         -v ~/.cache/helm:/root/.cache/helm \
-                        alpine/helm upgrade -i ${env.ENVIRONMENT}-backend RoomAppsBackend -f /config/${env.ENVIRONMENT}/backend_values.yaml
+                        alpine/helm upgrade -i ${env.ENVIRONMENT}-backend RoomAppsBackend -f /config/${env.ENVIRONMENT}/backend_values.yaml \
+                        --set roomworker.version=${env.BUILD_ROOMWORKER} --set roomstatus.version=${env.BUILD_ROOMSTATUS} --set roomobserver.version=${env.BUILD_ROOMOBSERVER}
                 """
             }
         }
