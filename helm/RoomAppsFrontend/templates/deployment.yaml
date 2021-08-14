@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: temperature-frontend
-        image: {{ .Values.temperaturefrontend.image }} 
+        image: "{{ .Values.temperaturefrontend.image }}:{{ .Values.temperaturefrontend.version }}"
         ports:
         - containerPort: 8081
       imagePullSecrets:
