@@ -25,7 +25,7 @@ spec:
             name: {{ .Values.roomobserver.config }}
       containers:
       - name: room-observer
-        image: {{ .Values.roomobserver.image }}:{{ .Values.roomobserver.version }}
+        image: "{{ .Values.roomobserver.image }}:{{ .Values.roomobserver.version }}"
         #resources: {}
         #livenessProbe:
         #  httpGet:
@@ -76,7 +76,7 @@ spec:
             name: {{ .Values.roomstatus.config }}
       containers:
       - name: room-status
-        image: {{ .Values.roomstatus.image }}:{{ .Values.roomstatus.version }}
+        image: "{{ .Values.roomstatus.image }}:{{ .Values.roomstatus.version }}"
         #resources: {}
         #livenessProbe:
         #  httpGet:
@@ -128,7 +128,7 @@ spec:
             name: {{ .Values.roomworker.config }}
       containers:
       - name: room-worker
-        image: {{ .Values.roomworker.image }}:{{ .Values.roomworker.version }}
+        image: "{{ .Values.roomworker.image }}:{{ .Values.roomworker.version }}"
         #resources: {}
         #livenessProbe:
         #  httpGet:
