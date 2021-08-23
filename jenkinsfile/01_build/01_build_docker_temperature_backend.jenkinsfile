@@ -1,14 +1,15 @@
 pipeline {
     agent {
-        label "tomcat"
+        label "master"
     }
     
     tools { 
         jdk 'java11'
-        maven 'Maven'
+        maven 'MAVEN_3_8_2'
     }
     
     environment {         
+        mvnHome = tool 'MAVEN_3_8_2'
         LC_ALL = 'en_US.UTF-8'         
         LANG    = 'en_US.UTF-8'         
         LANGUAGE = 'en_US.UTF-8' 
