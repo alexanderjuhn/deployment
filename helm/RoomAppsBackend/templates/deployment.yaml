@@ -26,21 +26,21 @@ spec:
       containers:
       - name: room-observer
         image: "{{ .Values.roomobserver.image }}:{{ .Values.roomobserver.version }}"
-        #resources: {}
-        #livenessProbe:
-        #  httpGet:
-        #    path: /actuator/health/liveness
-        #    port: 8081
-        #  initialDelaySeconds: 120
-        #readinessProbe:
-        #  httpGet:
-        #    path: /actuator/health/readiness
-        #    port: 8081
-        #  initialDelaySeconds: 120
-        #lifecycle:
-        #  preStop:
-        #    exec:
-        #      command: ["sh", "-c", "sleep 10"]
+        resources: {}
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8081
+          initialDelaySeconds: 240
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8081
+          initialDelaySeconds: 240
+        lifecycle:
+          preStop:
+            exec:
+              command: ["sh", "-c", "sleep 10"]
         ports:
         - containerPort: 8081
         volumeMounts:
