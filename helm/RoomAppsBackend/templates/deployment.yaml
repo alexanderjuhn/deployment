@@ -77,21 +77,21 @@ spec:
       containers:
       - name: room-status
         image: "{{ .Values.roomstatus.image }}:{{ .Values.roomstatus.version }}"
-        #resources: {}
-        #livenessProbe:
-        #  httpGet:
-        #    path: /actuator/health/liveness
-        #    port: 8081
-        #  initialDelaySeconds: 120
-        #readinessProbe:
-        #  httpGet:
-        #    path: /actuator/health/readiness
-        #    port: 8081
-        #  initialDelaySeconds: 120
-        #lifecycle:
-        #  preStop:
-        #    exec:
-        #      command: ["sh", "-c", "sleep 10"]
+        resources: {}
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8081
+          initialDelaySeconds: 120
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8081
+          initialDelaySeconds: 120
+        lifecycle:
+          preStop:
+            exec:
+              command: ["sh", "-c", "sleep 10"]
 
         ports:
         - containerPort: 8081
@@ -129,21 +129,21 @@ spec:
       containers:
       - name: room-worker
         image: "{{ .Values.roomworker.image }}:{{ .Values.roomworker.version }}"
-        #resources: {}
-        #livenessProbe:
-        #  httpGet:
-        #    path: /actuator/health/liveness
-        #    port: 8081
-        #  initialDelaySeconds: 120
-        #readinessProbe:
-        #  httpGet:
-        #    path: /actuator/health/readiness
-        #    port: 8081
-        #  initialDelaySeconds: 120
-        #lifecycle:
-        #  preStop:
-        #    exec:
-        #      command: ["sh", "-c", "sleep 10"]
+        resources: {}
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8081
+          initialDelaySeconds: 120
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8081
+          initialDelaySeconds: 120
+        lifecycle:
+          preStop:
+            exec:
+              command: ["sh", "-c", "sleep 10"]
 
         ports:
         - containerPort: 8081
