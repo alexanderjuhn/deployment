@@ -45,7 +45,9 @@ spec:
         - containerPort: 8081
         volumeMounts:
             - name: config-volume
-              mountPath: /workspace/config
+              items:
+              - key: application.properties 
+                path: application.properties
       imagePullSecrets:
         - name: nexus
 ---
@@ -82,12 +84,12 @@ spec:
           httpGet:
             path: /actuator/health/liveness
             port: 8081
-          initialDelaySeconds: 120
+          initialDelaySeconds: 240
         readinessProbe:
           httpGet:
             path: /actuator/health/readiness
             port: 8081
-          initialDelaySeconds: 120
+          initialDelaySeconds: 240
         lifecycle:
           preStop:
             exec:
