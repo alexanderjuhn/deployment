@@ -83,12 +83,12 @@ spec:
         livenessProbe:
           httpGet:
             path: /actuator/health/liveness
-            port: 8083
+            port: 8081
           initialDelaySeconds: 240
         readinessProbe:
           httpGet:
             path: /actuator/health/readiness
-            port: 8083
+            port: 8081
           initialDelaySeconds: 240
         lifecycle:
           preStop:
@@ -96,7 +96,7 @@ spec:
               command: ["sh", "-c", "sleep 10"]
 
         ports:
-        - containerPort: 8083
+        - containerPort: 8081
         volumeMounts:
             - name: config-volume
               mountPath: /workspace/config
@@ -135,12 +135,12 @@ spec:
         livenessProbe:
           httpGet:
             path: /actuator/health/liveness
-            port: 8082
+            port: 8081
           initialDelaySeconds: 120
         readinessProbe:
           httpGet:
             path: /actuator/health/readiness
-            port: 8082
+            port: 8081
           initialDelaySeconds: 120
         lifecycle:
           preStop:
@@ -148,7 +148,7 @@ spec:
               command: ["sh", "-c", "sleep 10"]
 
         ports:
-        - containerPort: 8082
+        - containerPort: 8081
         volumeMounts:
             - name: config-volume
               mountPath: /workspace/config
