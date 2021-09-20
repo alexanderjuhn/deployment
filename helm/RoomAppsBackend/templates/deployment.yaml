@@ -27,16 +27,16 @@ spec:
       - name: room-observer
         image: "{{ .Values.roomobserver.image }}:{{ .Values.roomobserver.version }}"
         resources: {}
-        livenessProbe:
-          httpGet:
-            path: /actuator/health/liveness
-            port: 8081
-          initialDelaySeconds: 240
-        readinessProbe:
-          httpGet:
-            path: /actuator/health/readiness
-            port: 8081
-          initialDelaySeconds: 240
+#        livenessProbe:
+#          httpGet:
+#            path: /actuator/health/liveness
+#            port: 8081
+#          initialDelaySeconds: 240
+#        readinessProbe:
+#          httpGet:
+#            path: /actuator/health/readiness
+#            port: 8081
+#          initialDelaySeconds: 240
         lifecycle:
           preStop:
             exec:
@@ -78,16 +78,16 @@ spec:
       - name: room-status
         image: "{{ .Values.roomstatus.image }}:{{ .Values.roomstatus.version }}"
         resources: {}
-        livenessProbe:
-          httpGet:
-            path: /actuator/health/liveness
-            port: 8081
-          initialDelaySeconds: 240
-        readinessProbe:
-          httpGet:
-            path: /actuator/health/readiness
-            port: 8081
-          initialDelaySeconds: 240
+#        livenessProbe:
+#          httpGet:
+#            path: /actuator/health/liveness
+#            port: 8081
+#          initialDelaySeconds: 240
+#        readinessProbe:
+#          httpGet:
+#            path: /actuator/health/readiness
+#            port: 8081
+#          initialDelaySeconds: 240
         lifecycle:
           preStop:
             exec:
@@ -130,16 +130,16 @@ spec:
       - name: room-worker
         image: "{{ .Values.roomworker.image }}:{{ .Values.roomworker.version }}"
         resources: {}
-        livenessProbe:
-          httpGet:
-            path: /actuator/health/liveness
-            port: 8081
-          initialDelaySeconds: 120
-        readinessProbe:
-          httpGet:
-            path: /actuator/health/readiness
-            port: 8081
-          initialDelaySeconds: 120
+#        livenessProbe:
+#          httpGet:
+#            path: /actuator/health/liveness
+#            port: 8081
+#          initialDelaySeconds: 120
+#        readinessProbe:
+#          httpGet:
+#            path: /actuator/health/readiness
+#            port: 8081
+#          initialDelaySeconds: 120
         lifecycle:
           preStop:
             exec:
