@@ -45,9 +45,7 @@ spec:
         - containerPort: 8081
         volumeMounts:
             - name: config-volume
-              items:
-              - key: application.properties 
-                path: application.properties
+              mountPath: /workspace/config
       imagePullSecrets:
         - name: nexus
 ---
