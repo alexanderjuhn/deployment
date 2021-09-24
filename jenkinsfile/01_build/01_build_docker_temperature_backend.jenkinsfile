@@ -48,6 +48,7 @@ pipeline {
             steps {
                 sh """
                     cd RoomApps
+                    env
                     mvn -B install"""
             }
         }
