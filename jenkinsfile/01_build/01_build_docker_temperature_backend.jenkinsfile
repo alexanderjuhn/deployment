@@ -60,19 +60,19 @@ pipeline {
                 sh """
                     cd RoomApps
                     cd RoomWorker
-                    docker build -t ${env.CONTAINER_IMAGE_WORKER} .
+                    docker build -t ${env.CONTAINER_IMAGE_WORKER} -f dockerfile .
                     docker tag ${env.CONTAINER_IMAGE_WORKER} ${env.CONTAINER_IMAGE_WORKER}
                 """
                 sh """
                     cd RoomApps
                     cd RoomStatus
-                    docker build -t ${env.CONTAINER_IMAGE_STATUS} .
+                    docker build -t ${env.CONTAINER_IMAGE_STATUS} -f dockerfile .
                     docker tag ${env.CONTAINER_IMAGE_STATUS} ${env.CONTAINER_IMAGE_STATUS}
                 """
                 sh """
                     cd RoomApps
                     cd RoomObserver
-                    docker build -t ${env.CONTAINER_IMAGE_OBSERVER} .
+                    docker build -t ${env.CONTAINER_IMAGE_OBSERVER} -f dockerfile .
                     docker tag ${env.CONTAINER_IMAGE_OBSERVER} ${env.CONTAINER_IMAGE_OBSERVER}
                 """
             }
