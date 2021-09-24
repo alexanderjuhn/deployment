@@ -48,6 +48,7 @@ pipeline {
             steps {
                 sh """
                     cd RoomApps
+                    . ~/.bashrc
                     env
                     whoami
                     mvn -B install"""
