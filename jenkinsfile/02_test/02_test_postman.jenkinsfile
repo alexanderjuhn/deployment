@@ -36,7 +36,9 @@ pipeline {
         stage('Build volume'){
             steps{
                 sh """
+                    id
                     cp ./deployment/postman/* ./config/postman/
+                    sudo chmod 777 -R ./config/postman/
                 """
             }
         }
