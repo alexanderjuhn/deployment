@@ -37,6 +37,7 @@ pipeline {
             steps{
                 sh """
                     sudo chmod -R 777 ./deployment/postman/*
+                    sudo chmod -R 777 ./config/postman/*
                     cp ./deployment/postman/* ./config/postman/
                 """
             }
