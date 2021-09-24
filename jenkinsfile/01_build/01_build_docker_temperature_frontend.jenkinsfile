@@ -58,7 +58,7 @@ pipeline {
             steps {
                 sh """
                     cd temperatureFrontend
-                    docker build -t ${env.CONTAINER_IMAGE} .
+                    docker build -t ${env.CONTAINER_IMAGE}  -f dockerfile .
                     docker tag ${env.CONTAINER_IMAGE} ${env.CONTAINER_IMAGE}
                 """
             }
