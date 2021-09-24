@@ -49,6 +49,7 @@ pipeline {
                 sh """
                     cd RoomApps
                     env
+                    whoami
                     mvn -B install"""
             }
         }
