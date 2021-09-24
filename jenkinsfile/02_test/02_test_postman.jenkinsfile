@@ -45,7 +45,7 @@ pipeline {
         stage('Run Postman tests'){
             steps{
                 sh """
-                    docker run -v "${env.WORKSPACE}/config/postman":/etc/newman --user "$(id -u):$(id -g)" --rm -t postman/newman run "/etc/newman/RoomApps.postman_collection.json" --color off  --environment="Dev.postman_environment.json"                    
+                    docker run -v "${env.WORKSPACE}/config/postman":/etc/newman --user '\$(id -u):\$(id -g)' --rm -t postman/newman run "/etc/newman/RoomApps.postman_collection.json" --color off  --environment="Dev.postman_environment.json"                    
                 """                
             }
         }
