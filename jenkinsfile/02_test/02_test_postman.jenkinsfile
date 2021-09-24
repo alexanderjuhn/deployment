@@ -38,7 +38,6 @@ pipeline {
                 sh """
                     id
                     cp ./deployment/postman/* ./config/postman/
-                    sudo chmod 777 -R ./config/postman/
                 """
             }
         }
