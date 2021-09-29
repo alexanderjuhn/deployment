@@ -20,9 +20,10 @@ pipeline {
         NEXUS_REPOSITORY = "home"
         NEXUS_CREDENTIAL_ID = "nexus"
         // Container Image to build
-        CONTAINER_IMAGE_OBSERVER = "${env.DOCKER_REPO}/roomobserver:${env.BUILD_NUMBER}.padLeft(4,'0')"
-        CONTAINER_IMAGE_STATUS = "${env.DOCKER_REPO}/roomstatus:${env.BUILD_NUMBER}.padLeft(4,'0')"
-        CONTAINER_IMAGE_WORKER = "${env.DOCKER_REPO}/roomworker:${env.BUILD_NUMBER}.padLeft(4,'0')"
+        PADDED_BUILDNUMBER=padBuildNumber("${env.BUILD_NUMBER}")
+        CONTAINER_IMAGE_OBSERVER = "${env.DOCKER_REPO}/roomobserver:$PADDED_BUILDNUMBER"
+        CONTAINER_IMAGE_STATUS = "${env.DOCKER_REPO}/roomstatus:$PADDED_BUILDNUMBER"
+        CONTAINER_IMAGE_WORKER = "${env.DOCKER_REPO}/roomworker:$PADDED_BUILDNUMBER"
         // Docker Login
         DOCKER_LOGIN = credentials('DOCKER_USER')
         // Remaining environment variables are set under 
@@ -89,4 +90,9 @@ pipeline {
             }
         }
     }
+}
+
+
+def padBuildNumber(String number) {
+    return number.padLeft(4,'0')
 }
