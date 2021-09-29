@@ -87,3 +87,8 @@ pipeline {
         
     }
 }
+
+
+def padBuildNumber(String number) {
+    return number.padLeft(4,'0')
+}
