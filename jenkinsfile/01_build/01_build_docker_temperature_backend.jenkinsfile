@@ -20,9 +20,9 @@ pipeline {
         NEXUS_REPOSITORY = "home"
         NEXUS_CREDENTIAL_ID = "nexus"
         // Container Image to build
-        CONTAINER_IMAGE_OBSERVER = "${env.DOCKER_REPO}/roomobserver:padLeft(${env.BUILD_NUMBER},'0')"
-        CONTAINER_IMAGE_STATUS = "${env.DOCKER_REPO}/roomstatus:padLeft(${env.BUILD_NUMBER},'0')"
-        CONTAINER_IMAGE_WORKER = "${env.DOCKER_REPO}/roomworker:padLeft(${env.BUILD_NUMBER},'0')"
+        CONTAINER_IMAGE_OBSERVER = "${env.DOCKER_REPO}/roomobserver:${env.BUILD_NUMBER}.padLeft(4,'0')"
+        CONTAINER_IMAGE_STATUS = "${env.DOCKER_REPO}/roomstatus:${env.BUILD_NUMBER}.padLeft(4,'0')"
+        CONTAINER_IMAGE_WORKER = "${env.DOCKER_REPO}/roomworker:${env.BUILD_NUMBER}.padLeft(4,'0')"
         // Docker Login
         DOCKER_LOGIN = credentials('DOCKER_USER')
         // Remaining environment variables are set under 
