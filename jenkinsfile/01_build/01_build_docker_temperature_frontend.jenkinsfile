@@ -22,7 +22,8 @@ pipeline {
         // Jenkins credential id to authenticate to Nexus OSS
         NEXUS_CREDENTIAL_ID = "nexus"
         // Container Image to build
-        CONTAINER_IMAGE = "${env.DOCKER_REPO}/temperaturefrontend:${env.BUILD_NUMBER}"
+        PADDED_BUILDNUMBER=padBuildNumber("${env.BUILD_NUMBER}")
+        CONTAINER_IMAGE = "${env.DOCKER_REPO}/temperaturefrontend:${PADDED_BUILDNUMBER}"
         // Docker Login
         DOCKER_LOGIN = credentials('DOCKER_USER')
         // Remaining environment variables are set under 
