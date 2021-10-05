@@ -53,7 +53,7 @@ pipeline {
                     case "SUCCESS":
                         COLOR="good"
                         break
-                    case "ERROR":
+                    case "FAILURE":
                         COLOR="error"
                         break
                     default:
