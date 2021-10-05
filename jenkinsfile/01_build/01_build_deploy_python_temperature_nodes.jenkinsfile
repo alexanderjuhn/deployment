@@ -33,4 +33,23 @@ pipeline {
             }
         }
     }
+
+    post {
+        always {
+            script{
+                switch("${currentBuild.currentResult}") {
+                    case "SUCCESS":
+                        COLOR="good"
+                        break
+                    case "ERROR":
+                        COLOR="error"
+                        break
+                    default:
+                        COLOR="warning"
+                        break
+                }
+                slackSend color: "${COLOR}", message: "Pipeline : ${env.JOB_NAME} - ${env.BUILD_NUMBER} : ${currentBuild.currentResult}"
+            }
+        }
+    }
 }
