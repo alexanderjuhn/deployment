@@ -1,7 +1,7 @@
  
 pipeline {
     agent {
-        label "1__***REMOVED***"
+        label "1__local-pi4"
     }
     
     tools { 
@@ -67,7 +67,7 @@ pipeline {
                         COLOR="good"
                         break
                     case "FAILURE":
-                        COLOR="error"
+                        COLOR="danger"
                         break
                     default:
                         COLOR="warning"

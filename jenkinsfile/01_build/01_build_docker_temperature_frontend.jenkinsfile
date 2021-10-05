@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label "***REMOVED***"
+        label "local-build"
     }
     
     tools { 
@@ -95,7 +95,7 @@ pipeline {
                         COLOR="good"
                         break
                     case "FAILURE":
-                        COLOR="error"
+                        COLOR="danger"
                         break
                     default:
                         COLOR="warning"
