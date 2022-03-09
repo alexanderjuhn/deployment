@@ -37,7 +37,6 @@ pipeline {
         stage('Run Helm deployment'){
             steps{
                 sh """
-                    docker login ${env.DOCKER_REPO} -u ${env.DOCKER_LOGIN_USR} -p ${env.DOCKER_LOGIN_PSW}
                     helm upgrade -i ${env.ENVIRONMENT}-backend deployment/helm/RoomAppsBackend -f ./config/helm/RoomApps/${env.ENVIRONMENT}/backend_values.yaml --set roomworker.version=${env.BUILD_ROOMWORKER} --set roomstatus.version=${env.BUILD_ROOMSTATUS} --set roomobserver.version=${env.BUILD_ROOMOBSERVER}
                 """
             }
