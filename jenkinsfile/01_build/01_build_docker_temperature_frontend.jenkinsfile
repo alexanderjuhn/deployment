@@ -70,6 +70,7 @@ pipeline {
                 sh """
                     docker login ${env.DOCKER_REPO} -u ${env.DOCKER_LOGIN_USR} -p ${env.DOCKER_LOGIN_PSW}
                     docker push ${env.CONTAINER_IMAGE}$PADDED_BUILDNUMBER
+                    docker push ${env.CONTAINER_IMAGE}latest
                 """
             }
         }
