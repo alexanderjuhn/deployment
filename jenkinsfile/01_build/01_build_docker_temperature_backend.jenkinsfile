@@ -96,19 +96,10 @@ pipeline {
 
     post {
         always {
-            script{
-                switch("${currentBuild.currentResult}") {
-                    case "SUCCESS":
-                        COLOR="good"
-                        break
-                    case "FAILURE":
-                        COLOR="danger"
-                        break
-                    default:
-                        COLOR="warning"
-                        break
-                }
-                slackSend color: "${COLOR}", message: "Pipeline : ${env.JOB_NAME} - ${env.BUILD_NUMBER} : ${currentBuild.currentResult}"
+            withCredentials([string(credentialsId: 'TelegramChatID', variable: 'CHAT_ID'), string(credentialsId: 'TelegramBotToken', variable: 'BOT_TOKEN')]) {
+                sh """
+                    /srv/scripts/callTelegram.sh ${currentBuild.currentResult} ${env.JOB_NAME} ${env.BUILD_ID} ${env.BOT_TOKEN} ${env.CHAT_ID}
+                """
             }
         }
     }
