@@ -23,7 +23,7 @@ pipeline {
         NEXUS_CREDENTIAL_ID = "nexus"
         // Container Image to build
         PADDED_BUILDNUMBER=padBuildNumber("${env.BUILD_NUMBER}")
-        CONTAINER_IMAGE = "${env.DOCKER_REPO}/temperaturefrontend:$PADDED_BUILDNUMBER"
+        CONTAINER_IMAGE = "${env.DOCKER_REPO}/temperaturefrontend:"
         // Docker Login
         DOCKER_LOGIN = credentials('DOCKER_USER')
         // Remaining environment variables are set under 
@@ -60,7 +60,7 @@ pipeline {
                 sh """
                     cd temperatureFrontend
                     docker build -t ${env.CONTAINER_IMAGE}  -f dockerfile .
-                    docker tag ${env.CONTAINER_IMAGE} ${env.CONTAINER_IMAGE}
+                    docker tag ${env.CONTAINER_IMAGE}$PADDED_BUILDNUMBER ${env.CONTAINER_IMAGE}latest
                 """
             }
         }
@@ -69,7 +69,7 @@ pipeline {
             steps {
                 sh """
                     docker login ${env.DOCKER_REPO} -u ${env.DOCKER_LOGIN_USR} -p ${env.DOCKER_LOGIN_PSW}
-                    docker push ${env.CONTAINER_IMAGE}
+                    docker push ${env.CONTAINER_IMAGE}$PADDED_BUILDNUMBER
                 """
             }
         }
