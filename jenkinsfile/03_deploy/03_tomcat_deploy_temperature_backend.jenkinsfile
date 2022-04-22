@@ -62,9 +62,7 @@ pipeline {
     post {
         always {
             withCredentials([string(credentialsId: 'TelegramChatID', variable: 'CHAT_ID'), string(credentialsId: 'TelegramBotToken', variable: 'BOT_TOKEN')]) {
-                sh """
-                    /srv/scripts/callTelegram.sh ${currentBuild.currentResult} ${env.JOB_NAME} ${env.BUILD_ID} ${env.BOT_TOKEN} ${env.CHAT_ID}
-                """
+                callTelegram("${currentBuild.currentResult}", "${env.JOB_NAME}", "${env.BUILD_ID}")
             }
         }
     }
