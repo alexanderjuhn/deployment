@@ -55,6 +55,17 @@ pipeline {
                     mvn -B install"""
             }
         }
+
+        stage('Sonarqube'){
+            steps {
+                withSonarQubeEnv(credentialsId: 'Sonarqube', installationName: 'local-sonar') {
+                    sh """
+                        cd RoomApps
+                        mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar
+                    """
+                }
+            }
+        }
         
         stage('Build containers'){
             steps {
