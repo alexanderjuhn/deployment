@@ -73,21 +73,21 @@ pipeline {
                     cd RoomApps
                     cd RoomWorker
                     docker login ${env.DOCKER_REPO} -u ${env.DOCKER_LOGIN_USR} -p ${env.DOCKER_LOGIN_PSW}
-                    docker build -t ${env.CONTAINER_IMAGE_WORKER} -f dockerfile .
+                    docker build -t ${env.CONTAINER_IMAGE_WORKER} --build-arg JAR_FILE=target/RoomWorker-spring-boot.jar -f dockerfile .
                     docker tag ${env.CONTAINER_IMAGE_WORKER} ${env.CONTAINER_IMAGE_WORKER}
                 """
                 sh """
                     cd RoomApps
                     cd RoomStatus
                     docker login ${env.DOCKER_REPO} -u ${env.DOCKER_LOGIN_USR} -p ${env.DOCKER_LOGIN_PSW}
-                    docker build -t ${env.CONTAINER_IMAGE_STATUS} -f dockerfile .
+                    docker build -t ${env.CONTAINER_IMAGE_STATUS} --build-arg JAR_FILE=target/RoomStatus-spring-boot.jar -f dockerfile .
                     docker tag ${env.CONTAINER_IMAGE_STATUS} ${env.CONTAINER_IMAGE_STATUS}
                 """
                 sh """
                     cd RoomApps
                     cd RoomObserver
                     docker login ${env.DOCKER_REPO} -u ${env.DOCKER_LOGIN_USR} -p ${env.DOCKER_LOGIN_PSW}
-                    docker build -t ${env.CONTAINER_IMAGE_OBSERVER} -f dockerfile .
+                    docker build -t ${env.CONTAINER_IMAGE_OBSERVER} --build-arg JAR_FILE=target/RoomObserver-spring-boot.jar -f dockerfile .
                     docker tag ${env.CONTAINER_IMAGE_OBSERVER} ${env.CONTAINER_IMAGE_OBSERVER}
                 """
             }
