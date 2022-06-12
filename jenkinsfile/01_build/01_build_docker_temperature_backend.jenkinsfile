@@ -22,6 +22,7 @@ pipeline {
         // Container Image to build
         PADDED_BUILDNUMBER=padBuildNumber("${env.BUILD_NUMBER}")
         CONTAINER_IMAGE_OBSERVER = "${env.DOCKER_REPO}/roomobserver:$PADDED_BUILDNUMBER"
+        CONTAINER_IMAGE_OBSERVER_MQ = "${env.DOCKER_REPO}/roomobserver_mq:$PADDED_BUILDNUMBER"
         CONTAINER_IMAGE_STATUS = "${env.DOCKER_REPO}/roomstatus:$PADDED_BUILDNUMBER"
         CONTAINER_IMAGE_WORKER = "${env.DOCKER_REPO}/roomworker:$PADDED_BUILDNUMBER"
         // Docker Login
@@ -90,6 +91,13 @@ pipeline {
                     docker build -t ${env.CONTAINER_IMAGE_OBSERVER} --build-arg JAR_FILE=target/RoomObserver-spring-boot.jar -f dockerfile .
                     docker tag ${env.CONTAINER_IMAGE_OBSERVER} ${env.CONTAINER_IMAGE_OBSERVER}
                 """
+                sh """
+                    cd RoomApps
+                    cd RoomObserverMQ
+                    docker login ${env.DOCKER_REPO} -u ${env.DOCKER_LOGIN_USR} -p ${env.DOCKER_LOGIN_PSW}
+                    docker build -t ${env.CONTAINER_IMAGE_OBSERVER_MQ} --build-arg JAR_FILE=target/RoomObserverMQ-1.0.jar -f dockerfile .
+                    docker tag ${env.CONTAINER_IMAGE_OBSERVER_MQ} ${env.CONTAINER_IMAGE_OBSERVER_MQ}
+                """
             }
         }
         
@@ -100,6 +108,7 @@ pipeline {
                     docker push ${env.CONTAINER_IMAGE_WORKER}
                     docker push ${env.CONTAINER_IMAGE_STATUS}
                     docker push ${env.CONTAINER_IMAGE_OBSERVER}
+                    docker push ${env.CONTAINER_IMAGE_OBSERVER_MQ}
                 """
             }
         }

@@ -23,20 +23,15 @@ spec:
         - name: config-volume
           configMap:
             name: {{ .Values.roomobserver.config }}
+        - name: local-build-volume-roomobserver
+          persistentVolumeClaim:
+            claimName: local-build-volume-roomobserver
       containers:
       - name: room-observer
         image: "{{ .Values.roomobserver.image }}:{{ .Values.roomobserver.version }}"
+        #command: [ "/bin/sh", "-c", "--" ]
+        #args: [ "while true; do sleep 30; done;" ]
         resources: {}
-#        livenessProbe:
-#          httpGet:
-#            path: /actuator/health/liveness
-#            port: 8081
-#          initialDelaySeconds: 240
-#        readinessProbe:
-#          httpGet:
-#            path: /actuator/health/readiness
-#            port: 8081
-#          initialDelaySeconds: 240
         lifecycle:
           preStop:
             exec:
@@ -46,6 +41,9 @@ spec:
         volumeMounts:
             - name: config-volume
               mountPath: /workspace/config
+            - name: local-build-volume-roomobserver
+              mountPath: /tmp/log
+              subPath: roomobserver
       imagePullSecrets:
         - name: nexus
 ---
@@ -78,21 +76,10 @@ spec:
       - name: room-status
         image: "{{ .Values.roomstatus.image }}:{{ .Values.roomstatus.version }}"
         resources: {}
-#        livenessProbe:
-#          httpGet:
-#            path: /actuator/health/liveness
-#            port: 8081
-#          initialDelaySeconds: 240
-#        readinessProbe:
-#          httpGet:
-#            path: /actuator/health/readiness
-#            port: 8081
-#          initialDelaySeconds: 240
         lifecycle:
           preStop:
             exec:
               command: ["sh", "-c", "sleep 10"]
-
         ports:
         - containerPort: 8081
         volumeMounts:
@@ -130,16 +117,6 @@ spec:
       - name: room-worker
         image: "{{ .Values.roomworker.image }}:{{ .Values.roomworker.version }}"
         resources: {}
-#        livenessProbe:
-#          httpGet:
-#            path: /actuator/health/liveness
-#            port: 8081
-#          initialDelaySeconds: 120
-#        readinessProbe:
-#          httpGet:
-#            path: /actuator/health/readiness
-#            port: 8081
-#          initialDelaySeconds: 120
         lifecycle:
           preStop:
             exec:
