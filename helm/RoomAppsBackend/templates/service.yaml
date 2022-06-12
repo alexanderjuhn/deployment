@@ -23,7 +23,7 @@ spec:
     app: room-status
   ports:
     - protocol: TCP
-      port: 8083
+      port: 8081
       targetPort: 8083
       nodePort: {{ .Values.roomstatus.port }}
   type: NodePort
@@ -38,7 +38,7 @@ spec:
     app: room-worker
   ports:
     - protocol: TCP
-      port: 8082
+      port: 8081
       targetPort: 8082
       nodePort: {{ .Values.roomworker.port }}
   type: NodePort
