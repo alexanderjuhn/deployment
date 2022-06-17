@@ -35,8 +35,6 @@ spec:
           httpGet:
            path: /
            port: 8081
-        initialDelaySeconds: 300
-        periodSeconds: 10
         resources: {}
         lifecycle:
           preStop:
