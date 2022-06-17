@@ -31,6 +31,12 @@ spec:
         image: "{{ .Values.roomobserver.image }}:{{ .Values.roomobserver.version }}"
         #command: [ "/bin/sh", "-c", "--" ]
         #args: [ "while true; do sleep 30; done;" ]
+        livenessProbe:
+          httpGet:
+           path: /
+           port: 8081
+        initialDelaySeconds: 300
+        periodSeconds: 10
         resources: {}
         lifecycle:
           preStop:
