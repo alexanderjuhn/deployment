@@ -33,8 +33,9 @@ spec:
         #args: [ "while true; do sleep 30; done;" ]
         livenessProbe:
           httpGet:
-           path: /
-           port: 8081
+            path: /
+            port: 8081
+          initialDelaySeconds: 180  
         resources: {}
         lifecycle:
           preStop:
