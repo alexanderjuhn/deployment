@@ -27,6 +27,7 @@ spec:
           persistentVolumeClaim:
             claimName: local-build-volume-roomobserver
       containers:
+      - restartPolicy: Always
       - name: room-observer
         image: "{{ .Values.roomobserver.image }}:{{ .Values.roomobserver.version }}"
         #command: [ "/bin/sh", "-c", "--" ]
@@ -35,7 +36,7 @@ spec:
           httpGet:
             path: /actuator/prometheus
             port: 8081
-          initialDelaySeconds: 180  
+          initialDelaySeconds: 180
         resources: {}
         lifecycle:
           preStop:
