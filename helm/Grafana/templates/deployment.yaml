@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: grafana
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      hostAliases:
+      nodeSelector:
+        beta.kubernetes.io/arch: amd64
+      volumes:
+        - name: local-build-volume-grafana
+          persistentVolumeClaim:
+            claimName: local-build-volume-grafana
+      containers:
+      - name: grafana
+        image: "grafana/grafana:main-ubuntu"
+        resources: {}
+        lifecycle:
+          preStop:
+            exec:
+              command: ["sh", "-c", "sleep 10"]
+        ports:
+        - containerPort: 3000
+        volumeMounts:
+            - name: local-build-volume-grafana
+              mountPath: /var/lib/grafana
+              subPath: grafana
