@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins
+  labels:
+    app: jenkins
+  namespace: jenkins
+spec:
+  selector:
+    matchLabels:
+      app: jenkins
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jenkins
+    spec:
+      hostAliases:
+      nodeSelector:
+        beta.kubernetes.io/arch: amd64
+      volumes:
+        - name: config-volume
+        - name: local-build-volume-jenkins
+          persistentVolumeClaim:
+            claimName: local-build-volume-jenkins
+      containers:
+      - name: jenkins
+        image: "jenkins/jenkins:lts-jdk11"
+        env:
+        - name: JENKINS_OPTS
+          value: "--prefix=/jenkins"
+        resources: {}
+        lifecycle:
+          preStop:
+            exec:
+              command: ["sh", "-c", "sleep 10"]
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+            - name: local-build-volume-jenkins
+              mountPath: /var/jenkins_home
+              subPath: jenkins
+      imagePullSecrets:
+        - name: nexus
