@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  web:
+    image: rabbitmq:3-management
+    ports:
+      - "8000:80"
+      - "8001:15672"
+      - "8002:5672"
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+    volumes:
+      - ./definitions.file.json:/tmp/definitions.file.json
+      - /home/sascha/1_Dev/90_Repo/05_deployment/deployment/docker/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
