@@ -42,7 +42,7 @@ pipeline {
             steps {
                 git branch: 'master',
                 credentialsId: 'SSH_Key',
-                url: "git@${env.GIT_REPO}:/datengrab/hd/git/temperatur_master_java/home.git"
+                url: "git@${env.GIT_REPO}/datengrab/hd/git/temperatur_master_java/home.git"
             }
         }
         
