@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-build-volume-jenkins
+  labels:
+    type: nfs
+spec:
+  storageClassName: nfs-csi
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: local-build
+    path: "/data/nfs/jenkins"
+  mountOptions:
+    - nfsvers=4.2

@@ -1,0 +1,7 @@
+FROM python:3.9.14
+RUN /usr/local/bin/pip install robotframework
+RUN /usr/local/bin/pip install opencv-python
+RUN /usr/local/bin/pip install --upgrade robotframework-screencaplibrary
+RUN /usr/local/bin/pip install --upgrade robotframework-seleniumlibrary
+RUN /usr/local/bin/pip install webdriver-manager
+# RUN git clone 
