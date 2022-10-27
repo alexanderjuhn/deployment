@@ -5,8 +5,8 @@ pipeline {
 
     environment {
         GIT_USERNAME = 'git'
-        GIT_REPO_DEPLOYMENT = "${env.GIT_REPO}:/datengrab/hd/git/deployment.git"
-        GIT_REPO_CONFIG = "${env.GIT_REPO}:/datengrab/hd/git/config.git"
+        GIT_REPO_DEPLOYMENT = "${env.GIT_REPO}:sascha/deployment.git"
+        GIT_REPO_CONFIG = "${env.GIT_REPO}:sascha/config.git"
         // Docker Login
         DOCKER_LOGIN = credentials('DOCKER_USER')
     }
