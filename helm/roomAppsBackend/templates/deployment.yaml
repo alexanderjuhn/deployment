@@ -57,49 +57,6 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: room-status-deployment
-  labels:
-    app: room-status
-  namespace: {{ .Values.environment }}
-spec:
-  selector:
-    matchLabels:
-      app: room-status
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: room-status
-    spec:
-      hostAliases:
-      - ip: {{ .Values.hostAliasDB.ip }}
-        hostnames:
-        - {{ .Values.hostAliasDB.hostname }}
-      nodeSelector:
-        kubernetes.io/arch: arm64
-      volumes:
-        - name: config-volume
-          configMap:
-            name: {{ .Values.roomstatus.config }}
-      containers:
-      - name: room-status
-        image: "{{ .Values.roomstatus.image }}:{{ .Values.roomstatus.version }}"
-        resources: {}
-        lifecycle:
-          preStop:
-            exec:
-              command: ["sh", "-c", "sleep 10"]
-        ports:
-        - containerPort: 8081
-        volumeMounts:
-            - name: config-volume
-              mountPath: /workspace/config
-      imagePullSecrets:
-        - name: nexus
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
   name: room-worker-deployment
   labels:
     app: room-worker
