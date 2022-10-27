@@ -16,21 +16,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: room-status
-  namespace: {{ .Values.environment }}
-spec:
-  selector:
-    app: room-status
-  ports:
-    - protocol: TCP
-      port: 8081
-      targetPort: 8081
-      nodePort: {{ .Values.roomstatus.port }}
-  type: NodePort
----
-apiVersion: v1
-kind: Service
-metadata:
   name: room-worker
   namespace: {{ .Values.environment }}
 spec:
