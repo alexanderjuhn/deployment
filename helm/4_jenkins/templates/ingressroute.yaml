@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: jenkins-ingressroute
+  namespace: jenkins
+spec:
+  entryPoints:
+    - web
+  routes:
+  - kind: Rule
+    match: PathPrefix(`/jenkins`) 
+    services:
+    - kind: Service
+      name: jenkins
+      namespace: jenkins
+      port: 8080

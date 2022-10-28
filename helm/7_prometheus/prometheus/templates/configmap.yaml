@@ -1,0 +1,141 @@
+apiVersion: v1
+kind: ConfigMap 
+metadata:
+  name: prometheus-server-conf
+  labels:
+    name: prometheus-server-conf
+  namespace: monitoring
+data:
+  prometheus.rules: |-
+    groups:
+    - name: devopscube demo alert
+      rules:
+      - alert: High Pod Memory
+        expr: sum(container_memory_usage_bytes) > 1
+        for: 1m
+        labels:
+          severity: slack
+        annotations:
+          summary: High Memory Usage
+  prometheus.yml: |-
+    global:
+      scrape_interval: 20s
+      evaluation_interval: 20s
+    rule_files:
+      - /etc/prometheus/prometheus.rules
+    alerting:
+      alertmanagers:
+      - scheme: http
+        static_configs:
+        - targets:
+          - "10.98.174.227:8080"
+    scrape_configs:
+       - job_name: 'kubernetes-apiservers'
+         kubernetes_sd_configs:
+         - role: endpoints
+         scheme: https
+         tls_config:
+           ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+         bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+         relabel_configs:
+         - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+           action: keep
+           regex: default;kubernetes;https
+       - job_name: 'kubernetes-cadvisor'
+         scheme: https
+         tls_config:
+           ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+         bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+         kubernetes_sd_configs:
+         - role: node
+         relabel_configs:
+         - action: labelmap
+           regex: __meta_kubernetes_node_label_(.+)
+         - target_label: __address__
+           replacement: kubernetes.default.svc:443
+         - source_labels: [__meta_kubernetes_node_name]
+           regex: (.+)
+           target_label: __metrics_path__
+           replacement: /api/v1/nodes/${1}/proxy/metrics/cadvisor
+  
+       # Linux Servers
+       - job_name: local-pi1
+         static_configs:
+           - targets: ['192.168.2.31:9100']
+             labels:
+               alias: local-pi1
+
+       - job_name: local-pi2
+         static_configs:
+           - targets: ['192.168.2.32:9100']
+             labels:
+               alias: local-pi2
+
+       - job_name: local-pi3
+         static_configs:
+           - targets: ['192.168.2.33:9100']
+             labels:
+               alias: local-pi3
+
+       - job_name: 192.168.2.20
+         static_configs:
+           - targets: ['192.168.2.20:9100']
+             labels:
+               alias: local-build
+
+       - job_name: local-mini
+         static_configs:
+           - targets: ['192.168.2.10:9100']
+             labels:
+               alias: local-mini
+
+       - job_name: sascha-pc
+         static_configs:
+           - targets: ['sascha-pc:9100']
+             labels:
+               alias: sascha-pc
+
+       - job_name: local-arbeitszimmer
+         static_configs:
+           - targets: ['192.168.2.41:9100']
+             labels:
+               alias: local-arbeitszimmer
+
+       - job_name: local-schlafzimmer
+         static_configs:
+           - targets: ['192.168.2.43:9100']
+             labels:
+               alias: local-schlafzimmer
+
+       - job_name: local-wohnzimmer
+         static_configs:
+           - targets: ['192.168.2.42:9100']
+             labels:
+               alias: local-wohnzimmer
+
+       - job_name: room-observer
+         metrics_path: /actuator/prometheus
+         static_configs:
+           - targets: ['192.168.2.20:30181']
+             labels:
+               alias: room-observer
+               group: service
+               env:   dev
+
+       - job_name: room-worker
+         metrics_path: /actuator/prometheus
+         static_configs:
+           - targets: ['192.168.2.20:30182']
+             labels:
+               alias: room-worker
+               group: service
+               env:   dev
+
+       - job_name: rabbitmq
+         metrics_path: /metrics
+         static_configs:
+           - targets: ['192.168.2.20:31051']
+             labels:
+               alias: rabbitmq
+               group: message
+               env: dev

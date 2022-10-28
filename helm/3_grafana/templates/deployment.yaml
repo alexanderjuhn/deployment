@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: grafana
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      hostAliases:
+      nodeSelector:
+        {{ .Values.grafana.nodeSelector }}
+      volumes:
+        - name: local-build-volume-grafana
+          persistentVolumeClaim:
+            claimName: local-build-volume-grafana
+      containers:
+      - name: grafana
+        image: {{ .Values.grafana.image }}
+        env:
+        - name: GF_SERVER_SERVE_FROM_SUB_PATH
+          value: "true"
+        - name: GF_SERVER_ROOT_URL
+          value: "%(protocol)s://%(domain)s/grafana"
+        resources: {}
+        lifecycle:
+          preStop:
+            exec:
+              command: ["sh", "-c", "sleep 10"]
+        ports:
+        - containerPort: 3000
+        volumeMounts:
+            - name: local-build-volume-grafana
+              mountPath: /var/lib/grafana
+              subPath: grafana
+
