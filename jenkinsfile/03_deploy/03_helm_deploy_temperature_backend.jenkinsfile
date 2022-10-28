@@ -36,9 +36,17 @@ pipeline {
 
         stage('Run Helm deployment'){
             steps{
-                sh """
-                    helm upgrade -i ${env.ENVIRONMENT}-backend deployment/helm/5_roomAppsBackend -f ./config/helm/roomapps_${env.ENVIRONMENT}_backend_values.yaml --set roomworker.version=${env.BUILD_ROOMWORKER} --set roomobserver.version=${env.BUILD_ROOMOBSERVER}
-                """
+                withCredentials([file(credentialsId: 'kubeconfig_microk8s', variable: 'FILE')]) {
+                    try{
+                        sh """
+                            cat $FILE > kubeconfig
+                            export KUBECONFIG=${WORKSPACE}/kubeconfig
+                            helm upgrade -i ${env.ENVIRONMENT}-backend deployment/helm/5_roomAppsBackend -f ./config/helm/roomapps_${env.ENVIRONMENT}_backend_values.yaml --set roomworker.version=${env.BUILD_ROOMWORKER} --set roomobserver.version=${env.BUILD_ROOMOBSERVER}
+                        """
+                    } finally {
+                        sh """rm ${WORKSPACE}/kubeconfig"""
+                    }
+                }
             }
         }
     }
