@@ -1,7 +1,0 @@
-# Test 
-
-environment: prod
-
-temperaturefrontend: 
-  port: 30080
-  image: localhost:9002/temperaturefrontend:latest

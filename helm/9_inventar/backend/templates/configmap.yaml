@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: inventar-backend-config
+  namespace: {{ .Values.namespace }}
+data: 
+  config.yaml: |
+    database:
+      {{- range $key, $value := .Values.configmap }}
+      {{ $key }}: {{ $value }}
+      {{- end }}
