@@ -79,8 +79,8 @@ tolerations: []
 affinity: {}
 
 configmap:  
-  hostname: 192.168.2.10
+  hostname: 127.0.0.1
   port: '5432'
   dbname: inventar_db
-  user: postgres
-  password: Password-1
+  user: user
+  password: password
