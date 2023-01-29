@@ -36,7 +36,12 @@ spec:
         livenessProbe:
           httpGet:
             path: /actuator/prometheus
-            port: 8081
+            port: {{ .Values.roomobserver.containerPort }}
+          initialDelaySeconds: 180
+        readinessProbe:
+          httpGet:
+            path: /actuator/prometheus
+            port: {{ .Values.roomobserver.containerPort }}
           initialDelaySeconds: 180
         resources: {}
         lifecycle:
@@ -44,7 +49,7 @@ spec:
             exec:
               command: ["sh", "-c", "sleep 10"]
         ports:
-        - containerPort: 8081
+        - containerPort: {{ .Values.roomobserver.containerPort }}
         volumeMounts:
             - name: config-volume
               mountPath: /workspace/config
@@ -91,7 +96,17 @@ spec:
               command: ["sh", "-c", "sleep 10"]
 
         ports:
-        - containerPort: 8081
+        - containerPort: {{ .Values.roomworker.containerPort }}
+        livenessProbe:
+          httpGet:
+            path: /actuator/prometheus
+            port: {{ .Values.roomworker.containerPort }}
+          initialDelaySeconds: 180
+        readinessProbe:
+          httpGet:
+            path: /actuator/prometheus
+            port: {{ .Values.roomworker.containerPort }}
+          initialDelaySeconds: 180
         volumeMounts:
             - name: config-volume
               mountPath: /workspace/config

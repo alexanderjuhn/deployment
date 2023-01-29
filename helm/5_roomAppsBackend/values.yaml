@@ -3,10 +3,13 @@
 environment: prod
 roomobserver: 
   port: 30081
+  containerPort: 8081
   image: localhost:9002/roomobserver:latest
 roomstatus: 
   port: 30083
+  containerPort: 8081
   image: localhost:9002/roomstatus:latest
 roomworker: 
   port: 30082
+  containerPort: 8081
   image: localhost:9002/roomworker:latest
