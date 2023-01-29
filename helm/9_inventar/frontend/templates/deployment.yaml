@@ -41,12 +41,12 @@ spec:
           livenessProbe:
             failureThreshold: 3
             httpGet:
-              path: /inventar_backend/livenessProbe
+              path: /inventar/
               port: {{ .Values.service.port }}
               scheme: HTTP
           readinessProbe:
             httpGet:
-              path: /inventar_backend/livenessProbe
+              path: /inventar/
               port: {{ .Values.service.port }}
               scheme: HTTP
             initialDelaySeconds: 60
