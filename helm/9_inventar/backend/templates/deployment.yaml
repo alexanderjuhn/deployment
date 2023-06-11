@@ -4,6 +4,9 @@ metadata:
   name: {{ include "inventar.fullname" . }}
   labels:
     {{- include "inventar.labels" . | nindent 4 }}
+    tags.datadoghq.com/env: staging
+    tags.datadoghq.com/service: inventar-backend
+    tags.datadoghq.com/version: "1.0"
   namespace: {{ .Values.namespace }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
@@ -20,6 +23,9 @@ spec:
       {{- end }}
       labels:
         {{- include "inventar.selectorLabels" . | nindent 8 }}
+        tags.datadoghq.com/env: staging
+        tags.datadoghq.com/service: inventar-backend
+        tags.datadoghq.com/version: "1.0"
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -54,6 +60,8 @@ spec:
           - name: inventar-backend-config
             mountPath: /etc/appname/config.yaml
             subPath: config.yaml
+          - name: apmsocketpath
+            mountPath: /var/run/datadog
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
@@ -72,3 +80,6 @@ spec:
       - name: inventar-backend-config
         configMap:
           name: inventar-backend-config
+      - hostPath:
+          path: /var/run/datadog/
+        name: apmsocketpath
