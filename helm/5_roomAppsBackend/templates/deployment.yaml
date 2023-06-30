@@ -140,5 +140,7 @@ spec:
         volumeMounts:
             - name: config-volume
               mountPath: /workspace/config
+            - name: config-volume
+              mountPath: /config
       imagePullSecrets:
         - name: nexus
