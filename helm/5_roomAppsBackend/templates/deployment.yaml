@@ -139,6 +139,6 @@ spec:
           initialDelaySeconds: 180
         volumeMounts:
             - name: config-volume
-              mountPath: /config
+              mountPath: /workspace/config
       imagePullSecrets:
         - name: nexus
