@@ -77,7 +77,7 @@ data:
              labels:
                alias: local-pi3
 
-       - job_name: 192.168.2.20
+       - job_name: local-build
          static_configs:
            - targets: ['192.168.2.20:9100']
              labels:
@@ -91,7 +91,7 @@ data:
 
        - job_name: sascha-pc
          static_configs:
-           - targets: ['sascha-pc:9100']
+           - targets: ['192.168.2.110:9100']
              labels:
                alias: sascha-pc
 
