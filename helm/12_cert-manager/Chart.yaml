@@ -1,0 +1,11 @@
+apiVersion: v2
+description: Install cert-manager
+maintainers:
+- name: Sascha
+name: cert-manager
+dependencies:
+- name: cert-manager
+  version: v1.12.2
+  repository: "https://charts.jetstack.io"
+type: application
+version: 1.0.0
