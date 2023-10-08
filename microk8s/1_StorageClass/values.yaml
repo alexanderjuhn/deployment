@@ -1,0 +1,5 @@
+csi-driver-nfs:
+  driver:
+    mountPermissions: 0777
+  kubeletDir: /var/snap/microk8s/common/var/lib/kubelet
+
