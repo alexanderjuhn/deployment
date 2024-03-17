@@ -4,12 +4,12 @@ environment: prod
 roomobserver: 
   port: 30081
   containerPort: 8081
-  image: local-build:3000/home/roomobserver_mq:76
+  image: localhost/roomobserver_mq:76
 roomstatus: 
   port: 30083
   containerPort: 8081
-  image: local-build:3000/home/roomobstatus:76
+  image: localhost/roomobstatus:76
 roomworker: 
   port: 30082
   containerPort: 8081
-  image: local-build:3000/home/roomworker:76
+  image: localhost/home/roomworker:76
