@@ -52,12 +52,12 @@ spec:
           httpGet:
             path: /actuator/prometheus
             port: {{ .Values.roomobserver.containerPort }}
-          initialDelaySeconds: 180
+          initialDelaySeconds: 600
         readinessProbe:
           httpGet:
             path: /actuator/prometheus
             port: {{ .Values.roomobserver.containerPort }}
-          initialDelaySeconds: 180
+          initialDelaySeconds: 600
         resources: {}
         lifecycle:
           preStop:
@@ -131,12 +131,12 @@ spec:
           httpGet:
             path: /actuator/prometheus
             port: {{ .Values.roomworker.containerPort }}
-          initialDelaySeconds: 180
+          initialDelaySeconds: 600
         readinessProbe:
           httpGet:
             path: /actuator/prometheus
             port: {{ .Values.roomworker.containerPort }}
-          initialDelaySeconds: 180
+          initialDelaySeconds: 600
         volumeMounts:
             - name: config-volume
               mountPath: /workspace/config
