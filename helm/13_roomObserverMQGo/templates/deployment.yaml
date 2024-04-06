@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: room-observer-deployment
+  labels:
+    app: room-observer
+spec:
+  selector:
+    matchLabels:
+      app: room-observer
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: room-observer
+    spec:
+      hostAliases:
+      - ip: {{ .Values.hostAliasDB.ip }}
+        hostnames:
+        - {{ .Values.hostAliasDB.hostname }}
+      nodeSelector:
+        kubernetes.io/arch: arm64
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ .Values.roomobserver.config }}
+      containers:
+      - name: room-observer
+        image: "{{ .Values.roomobserver.image }}:{{ .Values.roomobserver.version }}"
+        volumeMounts:
+            - name: config-volume
+              mountPath: /config
+      imagePullSecrets:
+        - name: nexus
