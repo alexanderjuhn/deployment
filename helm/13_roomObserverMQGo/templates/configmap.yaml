@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: roomobserver.config
+data:
+  config.yaml: |
+    database:
+      dbname: statusdb
+      hostname: 192.168.2.20
+      password: ${{ values.database.password }}
+      port: 32432
+      user: ${{ values.database.user }}
+    rabbitmq:
+      hostname: 192.168.2.20
+      port: 31052
+      user: ${{ values.rabbitmq.user }}
+      password: ${{ values.rabbitmq.password }}
+      queue: roomdata
