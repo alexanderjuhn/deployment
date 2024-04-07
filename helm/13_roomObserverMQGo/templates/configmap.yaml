@@ -7,12 +7,12 @@ data:
     database:
       dbname: statusdb
       hostname: 192.168.2.20
-      password: ${{ values.database.password }}
+      password: ${{ Values.database.password }}
       port: 32432
-      user: ${{ values.database.user }}
+      user: ${{ Values.database.user }}
     rabbitmq:
       hostname: 192.168.2.20
       port: 31052
-      user: ${{ values.rabbitmq.user }}
-      password: ${{ values.rabbitmq.password }}
+      user: ${{ Values.rabbitmq.user }}
+      password: ${{ Values.rabbitmq.password }}
       queue: roomdata
