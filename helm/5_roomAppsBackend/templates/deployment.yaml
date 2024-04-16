@@ -14,21 +14,6 @@ spec:
     metadata:
       labels:
         app: room-observer
-      annotations:
-        ad.datadoghq.com/room-observer.check.id: room-observer
-        ad.datadoghq.com/room-observer.checks: |
-          {
-            "openmetrics": {
-              "init_config": {},
-              "instances": [
-                {
-                  "openmetrics_endpoint": "http://%%host%%:8081/actuator/prometheus",
-                  "namespace": "dev",
-                  "metrics": [".*"]
-                }
-              ]
-            }
-          }
     spec:
       hostAliases:
       - ip: {{ .Values.hostAliasDB.ip }}
@@ -90,21 +75,6 @@ spec:
     metadata:
       labels:
         app: room-worker
-      annotations:
-        ad.datadoghq.com/room-observer.check.id: room-observer
-        ad.datadoghq.com/room-observer.checks: |
-          {
-            "openmetrics": {
-              "init_config": {},
-              "instances": [
-                {
-                  "openmetrics_endpoint": "http://%%host%%:8081/actuator/prometheus",
-                  "namespace": "dev",
-                  "metrics": [".*"]
-                }
-              ]
-            }
-          }
     spec:
       hostAliases:
       - ip: {{ .Values.hostAliasDB.ip }}

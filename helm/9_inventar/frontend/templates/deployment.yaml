@@ -4,9 +4,6 @@ metadata:
   name: {{ include "inventar.fullname" . }}
   labels:
     {{- include "inventar.labels" . | nindent 4 }}
-    tags.datadoghq.com/env: staging
-    tags.datadoghq.com/service: inventar-frontend
-    tags.datadoghq.com/version: "1.0"
   namespace: {{ .Values.namespace }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
@@ -20,14 +17,9 @@ spec:
       {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
-        admission.datadoghq.com/js-lib.version: v4.1.1
       {{- end }}
       labels:
         {{- include "inventar.selectorLabels" . | nindent 8 }}
-        tags.datadoghq.com/env: staging
-        tags.datadoghq.com/service: inventar-frontend
-        tags.datadoghq.com/version: "1.0"
-        admission.datadoghq.com/enabled: "true"
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
