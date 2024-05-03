@@ -17,7 +17,7 @@ spec:
     spec:
       hostAliases:
       nodeSelector:
-        {{ .Values.grafana.nodeSelector }}
+        {{ toYaml .Values.grafana.nodeSelector }}
       volumes:
         - name: local-build-volume-grafana
           persistentVolumeClaim:
