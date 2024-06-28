@@ -91,7 +91,7 @@ data:
 
        - job_name: sascha-pc
          static_configs:
-           - targets: ['192.168.2.110:9100']
+           - targets: ['192.168.2.198:9100']
              labels:
                alias: sascha-pc
 

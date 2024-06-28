@@ -1,2 +1,3 @@
 .project
 helm/14_keycloak/values_local.yaml
+helm/3_grafana/values_local.yaml
