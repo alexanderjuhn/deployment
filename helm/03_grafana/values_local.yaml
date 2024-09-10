@@ -1,0 +1,62 @@
+grafana:
+  nodeSelector:
+    kubernetes.io/arch: amd64
+
+  persistence:
+    storageClassName: csi-driver-storage-class
+    enabled: true
+    
+  initChownData:
+    enabled: false
+
+  service:
+    type: NodePort
+    nodePort: 30100
+
+  grafana.ini:
+    paths:
+      data: /var/lib/grafana/
+      logs: /var/log/grafana
+      plugins: /var/lib/grafana/plugins
+      provisioning: /etc/grafana/provisioning      
+    analytics:
+      check_for_updates: true
+    log:
+      mode: console
+    grafana_net:
+      url: https://grafana.net
+    server:
+      domain: "local-build"
+      root_url: "%(protocol)s://%(domain)s:30100/grafana/"
+      serve_from_sub_path: true
+    database:
+      type: postgres
+      host: 192.168.2.20:32432
+      name: grafana
+      user: postgres
+      password: Password-1
+    auth.generic_oauth:
+      enabled: true
+      name: Keycloak-OAuth
+      allow_sign_up: true
+      client_id: grafana
+      client_secret: RoDK9WdfrIUMBWro5GR0LysZAW8XqPSn
+      scopes: openid email profile offline_access roles
+      email_attribute_path: email
+      login_attribute_path: username
+      name_attribute_path: full_name
+      auth_url: http://192.168.2.20:32080/realms/homerealm/protocol/openid-connect/auth
+      token_url: http://192.168.2.20:32080/realms/homerealm/protocol/openid-connect/token
+      api_url: http://192.168.2.20:32080/realms/homerealm/protocol/openid-connect/userinfo
+      role_attribute_path: contains(groups[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'
+      role_attribute_strict: true
+    log:
+      level: debug
+
+
+  assertNoLeakedSecrets: false
+
+#role_attribute_path: contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'
+#      scopes: openid acr email profile offline_access grafana_client.roles
+
+
