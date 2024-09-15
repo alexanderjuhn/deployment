@@ -1,0 +1,13 @@
+apiVersion: v2
+description: Install RabbitMQ
+maintainers:
+- name: Sascha
+name: rabbitmq
+dependencies:
+- name: rabbitmq
+  repository: oci://registry-1.docker.io/bitnamicharts
+  tags:
+  - rabbitmq
+  version: 12.15.0
+type: application
+version: 1.0.0

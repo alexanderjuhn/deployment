@@ -1,0 +1,6 @@
+dependencies:
+- name: rabbitmq
+  repository: oci://registry-1.docker.io/bitnamicharts
+  version: 12.15.0
+digest: sha256:7f6b15906d9038918f6b1995ba8934c76251024828ebbe0abae8d9c35c83b2d9
+generated: "2024-09-10T16:33:43.006929204+02:00"
