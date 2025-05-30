@@ -332,7 +332,7 @@ server:
 
   image:
     repository: "hashicorp/vault"
-    tag: "1.11.3"
+    tag: "1.19.5"
     # Overrides the default Image Pull Policy
     pullPolicy: IfNotPresent
 
