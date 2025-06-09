@@ -5,7 +5,7 @@ maintainers:
 name: traefik
 dependencies:
 - name: traefik
-  version: v11.0.0
+  version: 36.0.0
   repository: "https://traefik.github.io/charts"
 type: application
 version: 1.0.0
