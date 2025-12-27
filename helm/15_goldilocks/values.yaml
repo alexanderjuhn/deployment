@@ -1,0 +1,6 @@
+goldilocks:
+  vpa:
+    enabled: true
+  dashboard: 
+    service:
+      type: NodePort
